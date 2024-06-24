@@ -1,0 +1,35 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "*.*.*"
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: clojure:lein
+    steps:
+      - uses: actions/checkout@v4
+      - name: install os deps
+        run: |
+          apt-get -qq update && apt-get -qy install rpm fakeroot bzip2
+      - name: install lein deps
+        run: |
+          lein install
+      - name: build packages
+        run: |
+          lein uberjar
+      - uses: actions/upload-artifact@v3
+        with:
+          name: artifacts
+          path: |
+            ./target/uberjar/*.jar
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ./target/uberjar/*.jar
+
+
