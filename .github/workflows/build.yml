@@ -22,7 +22,7 @@ jobs:
       - name: build packages
         run: |
           lein uberjar
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: artifacts
           path: |
