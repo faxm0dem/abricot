@@ -1,36 +1,48 @@
 # abricot
 
-FIXME: description
+Mirabelle plugin to send events to Riemann (or Mirabelle)
 
 ## Installation
 
-Download from http://example.com/FIXME.
+Download a [release](https://github.com/faxm0dem/abricot/releases) and copy the `.jar` to your filesystem.
 
 ## Usage
 
-FIXME: explanation
+Add a new output to your mirabelle instance by modifying its config file:
 
-    $ java -jar abricot-0.1.0-standalone.jar [args]
+```clojure
+; mirabelle-config.edn
+{:stream :outputs {:riemann-forward {:builder abricot.core/map->RiemannForward
+                                     :config {:config {:host "remote-riemann" :port 5555 :auto-connect true}}
+                                     :type :custom}}}
+```
 
-## Options
+Define a stream that will send to the new output. For instance:
 
-FIXME: listing of options this app accepts.
+```clojure
+; mirabelle-streams.clj
+(streams
+ (stream
+  {:name :mystream :default true}
+  (over 5
+    (output! :riemann-forward))))
+```
 
-## Examples
+Don't forget to compile your stream:
 
-...
+```
+java -jar mirabelle.jar compile path/to/streams/raw path/to/streams/compiled
+```
 
-### Bugs
+Run mirabelle with abricot:
 
-...
-
-### Any Other Sections
-### That You Think
-### Might be Useful
+```
+java -cp "mirabelle.jar:abricot.jar" mirabelle.core
+```
 
 ## License
 
-Copyright © 2024 FIXME
+Copyright © 2024
 
 This program and the accompanying materials are made available under the
 terms of the Eclipse Public License 2.0 which is available at
@@ -42,3 +54,4 @@ Public License, v. 2.0 are satisfied: GNU General Public License as published by
 the Free Software Foundation, either version 2 of the License, or (at your
 option) any later version, with the GNU Classpath Exception which is available
 at https://www.gnu.org/software/classpath/license.html.
+
