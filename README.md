@@ -42,6 +42,14 @@ Run mirabelle with abricot:
 java -cp "mirabelle.jar:abricot.jar" mirabelle.core
 ```
 
+## Contributing
+
+Building:
+
+```
+lein jar
+```
+
 ## License
 
 Copyright © 2024

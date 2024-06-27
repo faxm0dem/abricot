@@ -21,15 +21,15 @@ jobs:
           lein install
       - name: build packages
         run: |
-          lein uberjar
+          lein jar
       - uses: actions/upload-artifact@v4
         with:
           name: artifacts
           path: |
-            ./target/uberjar/*.jar
+            ./target/*.jar
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
-          files: ./target/uberjar/*.jar
+          files: ./target/*.jar
 
 
