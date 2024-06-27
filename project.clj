@@ -1,4 +1,4 @@
-(defproject abricot "0.1.0"
+(defproject abricot "0.2.0-SNAPSHOT"
   :description "Mirabelle plugin to send events to riemann"
   :url "https://github.com/faxm0dem/abricot"
   :license {:name "EPL-2.0 OR GPL-2.0-or-later WITH Classpath-exception-2.0"
