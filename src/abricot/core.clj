@@ -4,23 +4,23 @@
             [com.stuartsierra.component :as component]
             [riemann.client :refer [tcp-client send-event send-events]]))
 
-(defrecord RiemannForward [config
-                           ^RiemannClient client]
+(defrecord RiemannForward [client
+                           ^RiemannClient riemann-client]
   component/Lifecycle
   (start [this]
-    (if client
+    (if riemann-client
       this
-      (let [^RiemannClient c (riemann.client/tcp-client config)]
+      (let [^RiemannClient c (riemann.client/tcp-client client)]
         (assoc this
-               :config config
-               :client c))))
+               :client client
+               :riemann-client c))))
   (stop [this]
-    (when client
-      (.close client))
-    (assoc this :client nil))
+    (when riemann-client
+      (.close riemann-client))
+    (assoc this :riemann-client nil))
   io/Output
   (inject! [this events]
     (do
     (if (map? events)
-      (deref (riemann.client/send-event client events))
-      (deref (riemann.client/send-events client events))))))
+      (deref (riemann.client/send-event riemann-client events))
+      (deref (riemann.client/send-events riemann-client events))))))

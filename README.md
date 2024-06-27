@@ -13,9 +13,11 @@ Add a new output to your mirabelle instance by modifying its config file:
 ```clojure
 ; mirabelle-config.edn
 {:stream :outputs {:riemann-forward {:builder abricot.core/map->RiemannForward
-                                     :config {:config {:host "remote-riemann" :port 5555 :auto-connect true}}
+                                     :config {:client {:host "remote-riemann" :port 5555 :auto-connect true}}
                                      :type :custom}}}
 ```
+
+The `:params` map contains options passed to [`riemann.client/tcp-client`](https://github.com/riemann/riemann-clojure-client/blob/main/src/riemann/client.clj#L120).
 
 Define a stream that will send to the new output. For instance:
 
